@@ -1,0 +1,113 @@
+.output-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background-color: #0a0a0a;
+    border: 1px solid #2a2a2a;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+
+.output-row:hover {
+    background-color: #1a1a1a;
+    border-color: #3a3a3a;
+}
+
+.label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+    min-width: 140px;
+}
+
+.value {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    color: #e5e7eb;
+    cursor: pointer;
+    user-select: all;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s;
+    position: relative;
+}
+
+.value:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #93bbfc;
+}
+
+.value:active {
+    transform: scale(0.98);
+}
+
+.copyable {
+    position: relative;
+}
+
+.copyable::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 0.25rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+    pointer-events: none;
+}
+
+.copyable:hover::after {
+    opacity: 1;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #1f2937;
+    color: #f3f4f6;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    pointer-events: none;
+    z-index: 50;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+
+input:focus {
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#dateOutputs:not(.hidden),
+#unixOutputs:not(.hidden) {
+    animation: fadeIn 0.3s ease-out;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+input[type="text"] {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+}
+
+.ascii-art {
+    font-family: 'Courier New', monospace;
+    line-height: 1.2;
+    white-space: pre;
+    color: #6b7280;
+    font-size: 0.75rem;
+    letter-spacing: -0.05em;
+}
