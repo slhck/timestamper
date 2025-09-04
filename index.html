@@ -260,6 +260,9 @@
                 try {
                     await navigator.clipboard.writeText(text);
                     
+                    // Remove text selection
+                    window.getSelection().removeAllRanges();
+                    
                     // Show copied tooltip
                     copiedTooltip.style.left = e.pageX + 'px';
                     copiedTooltip.style.top = (e.pageY - 30) + 'px';
