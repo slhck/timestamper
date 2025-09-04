@@ -27,14 +27,39 @@
 </head>
 <body class="bg-dark-bg text-gray-300 min-h-screen flex flex-col">
     <div class="max-w-4xl mx-auto w-full p-8 flex-1">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-light text-gray-100">Timestamp Converter</h1>
-            <button 
-                id="currentDateBtn"
-                class="px-4 py-2 bg-dark-card border border-dark-border rounded-lg text-gray-300 hover:bg-dark-hover hover:border-gray-600 transition-all duration-200 text-sm font-medium"
-            >
-                Use current date
-            </button>
+        <div class="header-container mb-8">
+            <h1 class="text-3xl font-light text-gray-100 mb-4 md:mb-0">Timestamp Converter</h1>
+            <div class="controls-container">
+                <select 
+                    id="localeSelect"
+                    class="control-select"
+                >
+                    <option value="en-US">English (US)</option>
+                    <option value="en-GB">English (UK)</option>
+                    <option value="de-DE">Deutsch</option>
+                    <option value="fr-FR">Français</option>
+                    <option value="es-ES">Español</option>
+                    <option value="it-IT">Italiano</option>
+                    <option value="pt-BR">Português (BR)</option>
+                    <option value="ja-JP">日本語</option>
+                    <option value="zh-CN">中文 (简体)</option>
+                    <option value="ko-KR">한국어</option>
+                    <option value="ar-SA">العربية</option>
+                    <option value="ru-RU">Русский</option>
+                </select>
+                <select 
+                    id="timezoneSelect"
+                    class="control-select"
+                >
+                    <option value="local">Browser Timezone</option>
+                </select>
+                <button 
+                    id="currentDateBtn"
+                    class="control-button"
+                >
+                    Use current date
+                </button>
+            </div>
         </div>
         
         <!-- Unix to Date Converter -->
@@ -53,7 +78,7 @@
                     <span id="isoUtc" class="value copyable"></span>
                 </div>
                 <div class="output-row">
-                    <span class="label">ISO 8601 (Local)</span>
+                    <span class="label">ISO 8601 (Selected TZ)</span>
                     <span id="isoLocal" class="value copyable"></span>
                 </div>
                 <div class="output-row">
@@ -128,6 +153,122 @@
     <script>
         const { DateTime } = luxon;
 
+        // Timezone data with UTC offsets (covers all UTC offsets from -12 to +14)
+        const timezones = [
+            { value: 'Pacific/Midway', label: 'Midway Island', offset: -11 },
+            { value: 'Pacific/Honolulu', label: 'Honolulu', offset: -10 },
+            { value: 'America/Anchorage', label: 'Anchorage', offset: -9 },
+            { value: 'America/Los_Angeles', label: 'Los Angeles', offset: -8 },
+            { value: 'America/Denver', label: 'Denver', offset: -7 },
+            { value: 'America/Chicago', label: 'Chicago', offset: -6 },
+            { value: 'America/New_York', label: 'New York', offset: -5 },
+            { value: 'America/Caracas', label: 'Caracas', offset: -4.5 },
+            { value: 'America/Halifax', label: 'Halifax', offset: -4 },
+            { value: 'America/St_Johns', label: 'St. Johns', offset: -3.5 },
+            { value: 'America/Sao_Paulo', label: 'São Paulo', offset: -3 },
+            { value: 'Atlantic/South_Georgia', label: 'South Georgia', offset: -2 },
+            { value: 'Atlantic/Azores', label: 'Azores', offset: -1 },
+            { value: 'UTC', label: 'UTC', offset: 0 },
+            { value: 'Europe/London', label: 'London', offset: 0 },
+            { value: 'Europe/Paris', label: 'Paris', offset: 1 },
+            { value: 'Europe/Berlin', label: 'Berlin', offset: 1 },
+            { value: 'Africa/Cairo', label: 'Cairo', offset: 2 },
+            { value: 'Europe/Athens', label: 'Athens', offset: 2 },
+            { value: 'Europe/Moscow', label: 'Moscow', offset: 3 },
+            { value: 'Africa/Nairobi', label: 'Nairobi', offset: 3 },
+            { value: 'Asia/Tehran', label: 'Tehran', offset: 3.5 },
+            { value: 'Asia/Dubai', label: 'Dubai', offset: 4 },
+            { value: 'Asia/Kabul', label: 'Kabul', offset: 4.5 },
+            { value: 'Asia/Karachi', label: 'Karachi', offset: 5 },
+            { value: 'Asia/Kolkata', label: 'Kolkata', offset: 5.5 },
+            { value: 'Asia/Kathmandu', label: 'Kathmandu', offset: 5.75 },
+            { value: 'Asia/Dhaka', label: 'Dhaka', offset: 6 },
+            { value: 'Asia/Yangon', label: 'Yangon', offset: 6.5 },
+            { value: 'Asia/Bangkok', label: 'Bangkok', offset: 7 },
+            { value: 'Asia/Shanghai', label: 'Shanghai', offset: 8 },
+            { value: 'Asia/Singapore', label: 'Singapore', offset: 8 },
+            { value: 'Asia/Tokyo', label: 'Tokyo', offset: 9 },
+            { value: 'Asia/Seoul', label: 'Seoul', offset: 9 },
+            { value: 'Australia/Adelaide', label: 'Adelaide', offset: 9.5 },
+            { value: 'Australia/Sydney', label: 'Sydney', offset: 10 },
+            { value: 'Pacific/Noumea', label: 'Noumea', offset: 11 },
+            { value: 'Pacific/Auckland', label: 'Auckland', offset: 12 },
+            { value: 'Pacific/Chatham', label: 'Chatham Islands', offset: 12.75 },
+            { value: 'Pacific/Tongatapu', label: 'Tongatapu', offset: 13 },
+            { value: 'Pacific/Kiritimati', label: 'Kiritimati', offset: 14 }
+        ];
+
+        // Populate timezone select with UTC offsets
+        function populateTimezones() {
+            const select = document.getElementById('timezoneSelect');
+            
+            // Sort by UTC offset
+            timezones.sort((a, b) => a.offset - b.offset);
+            
+            timezones.forEach(tz => {
+                const option = document.createElement('option');
+                option.value = tz.value;
+                
+                // Format offset
+                const offsetHours = Math.floor(Math.abs(tz.offset));
+                const offsetMinutes = Math.round((Math.abs(tz.offset) % 1) * 60);
+                const offsetSign = tz.offset >= 0 ? '+' : '-';
+                let offsetStr = `UTC${offsetSign}${offsetHours}`;
+                if (offsetMinutes > 0) {
+                    offsetStr += `:${offsetMinutes.toString().padStart(2, '0')}`;
+                }
+                
+                option.textContent = `(${offsetStr}) ${tz.label}`;
+                select.appendChild(option);
+            });
+        }
+
+        // Initialize timezones on load
+        populateTimezones();
+
+        // Get current locale and timezone settings
+        function getSelectedLocale() {
+            return document.getElementById('localeSelect').value;
+        }
+
+        function getSelectedTimezone() {
+            const tz = document.getElementById('timezoneSelect').value;
+            return tz === 'local' ? DateTime.local().zoneName : tz;
+        }
+
+        // Format date with locale awareness
+        function formatWithLocale(dt, format) {
+            const locale = getSelectedLocale();
+            const timezone = getSelectedTimezone();
+            const dtInZone = dt.setZone(timezone);
+            
+            if (format === 'human') {
+                // Locale-specific human readable format
+                return dtInZone.setLocale(locale).toLocaleString(DateTime.DATETIME_FULL);
+            } else if (format === 'date') {
+                return dtInZone.setLocale(locale).toLocaleString(DateTime.DATE_FULL);
+            } else if (format === 'time') {
+                return dtInZone.setLocale(locale).toLocaleString(DateTime.TIME_WITH_SECONDS);
+            }
+            return dtInZone.toISO();
+        }
+
+        // Update outputs when locale or timezone changes
+        function updateAllOutputs() {
+            const unixInput = document.getElementById('unixInput');
+            const dateInput = document.getElementById('dateInput');
+            
+            if (unixInput.value) {
+                unixInput.dispatchEvent(new Event('input'));
+            }
+            if (dateInput.value) {
+                dateInput.dispatchEvent(new Event('input'));
+            }
+        }
+
+        document.getElementById('localeSelect').addEventListener('change', updateAllOutputs);
+        document.getElementById('timezoneSelect').addEventListener('change', updateAllOutputs);
+
         // Unix to Date conversion
         document.getElementById('unixInput').addEventListener('input', function(e) {
             const input = e.target.value.trim();
@@ -174,12 +315,15 @@
             }
 
             // Set all the different formats
+            const timezone = getSelectedTimezone();
+            const locale = getSelectedLocale();
+            
             document.getElementById('isoUtc').textContent = dt.toUTC().toISO();
-            document.getElementById('isoLocal').textContent = dt.toISO();
-            document.getElementById('humanReadable').textContent = dt.toUTC().toFormat('MM/dd/yyyy @ h:mma') + '    UTC';
-            document.getElementById('rfc822').textContent = dt.toUTC().toRFC2822();
-            document.getElementById('rfc2822Cookie').textContent = dt.toUTC().toFormat('EEEE, dd-MMM-yy HH:mm:ss') + ' UTC';
-            document.getElementById('rfc3339').textContent = dt.toUTC().toISO();
+            document.getElementById('isoLocal').textContent = dt.setZone(timezone).toISO();
+            document.getElementById('humanReadable').textContent = formatWithLocale(dt, 'human');
+            document.getElementById('rfc822').textContent = dt.setZone(timezone).toRFC2822();
+            document.getElementById('rfc2822Cookie').textContent = dt.setZone(timezone).toFormat('EEEE, dd-MMM-yy HH:mm:ss ZZZ');
+            document.getElementById('rfc3339').textContent = dt.setZone(timezone).toISO();
 
             document.getElementById('dateOutputs').classList.remove('hidden');
         });
