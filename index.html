@@ -30,7 +30,7 @@
         <div class="header-container mb-8">
             <h1 class="text-3xl font-light text-gray-100 mb-4 md:mb-0">Timestamp Converter</h1>
             <div class="controls-container">
-                <select 
+                <select
                     id="localeSelect"
                     class="control-select"
                 >
@@ -47,13 +47,13 @@
                     <option value="ar-SA">العربية</option>
                     <option value="ru-RU">Русский</option>
                 </select>
-                <select 
+                <select
                     id="timezoneSelect"
                     class="control-select"
                 >
                     <option value="local">Browser Timezone</option>
                 </select>
-                <button 
+                <button
                     id="currentDateBtn"
                     class="control-button"
                 >
@@ -61,17 +61,17 @@
                 </button>
             </div>
         </div>
-        
+
         <!-- Unix to Date Converter -->
         <div class="bg-dark-card rounded-lg p-6 mb-8 border border-dark-border">
             <h2 class="text-lg font-medium text-gray-200 mb-4">Unix Timestamp → Date</h2>
-            <input 
-                type="text" 
-                id="unixInput" 
+            <input
+                type="text"
+                id="unixInput"
                 placeholder="Enter Unix timestamp (auto-detects seconds/milliseconds/microseconds)"
                 class="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-gray-600 transition-colors"
             >
-            
+
             <div id="dateOutputs" class="mt-6 space-y-3 hidden">
                 <div class="output-row">
                     <span class="label">ISO 8601 (UTC)</span>
@@ -98,18 +98,30 @@
                     <span id="rfc3339" class="value copyable"></span>
                 </div>
             </div>
+
+            <!-- Time adjustment buttons -->
+            <div id="timeAdjustButtons1" class="mt-6 flex flex-wrap gap-2 hidden justify-between">
+                <button class="time-adjust-btn flex-1" data-unit="years" data-amount="-1">-1 year</button>
+                <button class="time-adjust-btn flex-1" data-unit="months" data-amount="-1">-1 month</button>
+                <button class="time-adjust-btn flex-1" data-unit="weeks" data-amount="-1">-1 week</button>
+                <button class="time-adjust-btn flex-1" data-unit="minutes" data-amount="-1">-1 min</button>
+                <button class="time-adjust-btn flex-1" data-unit="minutes" data-amount="1">+1 min</button>
+                <button class="time-adjust-btn flex-1" data-unit="weeks" data-amount="1">+1 week</button>
+                <button class="time-adjust-btn flex-1" data-unit="months" data-amount="1">+1 month</button>
+                <button class="time-adjust-btn flex-1" data-unit="years" data-amount="1">+1 year</button>
+            </div>
         </div>
 
         <!-- Date to Unix Converter -->
         <div class="bg-dark-card rounded-lg p-6 border border-dark-border">
             <h2 class="text-lg font-medium text-gray-200 mb-4">Date → Unix Timestamp</h2>
-            <input 
-                type="text" 
-                id="dateInput" 
+            <input
+                type="text"
+                id="dateInput"
                 placeholder="Enter date in ISO 8601 or various formats"
                 class="w-full px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-gray-100 placeholder-gray-500 focus:outline-none focus:border-gray-600 transition-colors"
             >
-            
+
             <div id="unixOutputs" class="mt-6 space-y-3 hidden">
                 <div class="output-row">
                     <span class="label">Unix (seconds)</span>
@@ -127,6 +139,18 @@
                     <span class="label">Unix (microseconds)</span>
                     <span id="unixMicros" class="value copyable"></span>
                 </div>
+            </div>
+
+            <!-- Time adjustment buttons -->
+            <div id="timeAdjustButtons2" class="mt-6 flex flex-wrap gap-2 hidden justify-between">
+                <button class="time-adjust-btn flex-1" data-unit="years" data-amount="-1">-1 year</button>
+                <button class="time-adjust-btn flex-1" data-unit="months" data-amount="-1">-1 month</button>
+                <button class="time-adjust-btn flex-1" data-unit="weeks" data-amount="-1">-1 week</button>
+                <button class="time-adjust-btn flex-1" data-unit="minutes" data-amount="-1">-1 min</button>
+                <button class="time-adjust-btn flex-1" data-unit="minutes" data-amount="1">+1 min</button>
+                <button class="time-adjust-btn flex-1" data-unit="weeks" data-amount="1">+1 week</button>
+                <button class="time-adjust-btn flex-1" data-unit="months" data-amount="1">+1 month</button>
+                <button class="time-adjust-btn flex-1" data-unit="years" data-amount="1">+1 year</button>
             </div>
         </div>
 
@@ -174,7 +198,7 @@
             { value: 'America/Sao_Paulo', label: 'São Paulo', offset: -3 },
             { value: 'America/Buenos_Aires', label: 'Buenos Aires', offset: -3 },
             { value: 'America/St_Johns', label: 'Newfoundland', offset: -3.5 },
-            
+
             // Europe - at least 3-5 major cities
             { value: 'Atlantic/Reykjavik', label: 'Reykjavik', offset: 0 },
             { value: 'Europe/London', label: 'London', offset: 0 },
@@ -190,14 +214,14 @@
             { value: 'Europe/Athens', label: 'Athens', offset: 2 },
             { value: 'Europe/Istanbul', label: 'Istanbul', offset: 3 },
             { value: 'Europe/Moscow', label: 'Moscow', offset: 3 },
-            
+
             // Africa - at least 3 major cities
             { value: 'Africa/Casablanca', label: 'Casablanca', offset: 0 },
             { value: 'Africa/Lagos', label: 'Lagos', offset: 1 },
             { value: 'Africa/Cairo', label: 'Cairo', offset: 2 },
             { value: 'Africa/Johannesburg', label: 'Johannesburg', offset: 2 },
             { value: 'Africa/Nairobi', label: 'Nairobi', offset: 3 },
-            
+
             // Middle East & Asia
             { value: 'Asia/Dubai', label: 'Dubai', offset: 4 },
             { value: 'Asia/Tehran', label: 'Tehran', offset: 3.5 },
@@ -211,14 +235,14 @@
             { value: 'Asia/Shanghai', label: 'Beijing/Shanghai', offset: 8 },
             { value: 'Asia/Tokyo', label: 'Tokyo', offset: 9 },
             { value: 'Asia/Seoul', label: 'Seoul', offset: 9 },
-            
+
             // Oceania
             { value: 'Australia/Perth', label: 'Perth', offset: 8 },
             { value: 'Australia/Adelaide', label: 'Adelaide', offset: 9.5 },
             { value: 'Australia/Brisbane', label: 'Brisbane', offset: 10 },
             { value: 'Australia/Sydney', label: 'Sydney/Melbourne', offset: 10 },
             { value: 'Pacific/Auckland', label: 'Auckland', offset: 12 },
-            
+
             // UTC
             { value: 'UTC', label: 'UTC', offset: 0 }
         ];
@@ -226,14 +250,14 @@
         // Populate timezone select with UTC offsets
         function populateTimezones() {
             const select = document.getElementById('timezoneSelect');
-            
+
             // Sort by UTC offset
             timezones.sort((a, b) => a.offset - b.offset);
-            
+
             timezones.forEach(tz => {
                 const option = document.createElement('option');
                 option.value = tz.value;
-                
+
                 // Format offset
                 const offsetHours = Math.floor(Math.abs(tz.offset));
                 const offsetMinutes = Math.round((Math.abs(tz.offset) % 1) * 60);
@@ -242,7 +266,7 @@
                 if (offsetMinutes > 0) {
                     offsetStr += `:${offsetMinutes.toString().padStart(2, '0')}`;
                 }
-                
+
                 option.textContent = `(${offsetStr}) ${tz.label}`;
                 select.appendChild(option);
             });
@@ -266,7 +290,7 @@
             const locale = getSelectedLocale();
             const timezone = getSelectedTimezone();
             const dtInZone = dt.setZone(timezone);
-            
+
             if (format === 'human') {
                 // Locale-specific human readable format
                 return dtInZone.setLocale(locale).toLocaleString(DateTime.DATETIME_FULL);
@@ -282,7 +306,7 @@
         function updateAllOutputs() {
             const unixInput = document.getElementById('unixInput');
             const dateInput = document.getElementById('dateInput');
-            
+
             if (unixInput.value) {
                 unixInput.dispatchEvent(new Event('input'));
             }
@@ -299,16 +323,18 @@
             const input = e.target.value.trim();
             if (!input) {
                 document.getElementById('dateOutputs').classList.add('hidden');
+                document.getElementById('timeAdjustButtons1').classList.add('hidden');
                 return;
             }
 
             let dt;
-            
+
             // Check if input contains a decimal point (seconds.milliseconds format)
             if (input.includes('.')) {
                 const timestamp = parseFloat(input);
                 if (isNaN(timestamp)) {
                     document.getElementById('dateOutputs').classList.add('hidden');
+                    document.getElementById('timeAdjustButtons1').classList.add('hidden');
                     return;
                 }
                 // Convert seconds.milliseconds to DateTime
@@ -318,9 +344,10 @@
                 const timestamp = parseInt(input);
                 if (isNaN(timestamp)) {
                     document.getElementById('dateOutputs').classList.add('hidden');
+                    document.getElementById('timeAdjustButtons1').classList.add('hidden');
                     return;
                 }
-                
+
                 // Auto-detect timestamp precision
                 if (timestamp.toString().length <= 10) {
                     // Seconds
@@ -336,13 +363,14 @@
 
             if (!dt.isValid) {
                 document.getElementById('dateOutputs').classList.add('hidden');
+                document.getElementById('timeAdjustButtons1').classList.add('hidden');
                 return;
             }
 
             // Set all the different formats
             const timezone = getSelectedTimezone();
             const locale = getSelectedLocale();
-            
+
             document.getElementById('isoUtc').textContent = dt.toUTC().toISO();
             document.getElementById('isoLocal').textContent = dt.setZone(timezone).toISO();
             document.getElementById('humanReadable').textContent = formatWithLocale(dt, 'human');
@@ -351,6 +379,7 @@
             document.getElementById('rfc3339').textContent = dt.setZone(timezone).toISO();
 
             document.getElementById('dateOutputs').classList.remove('hidden');
+            document.getElementById('timeAdjustButtons1').classList.remove('hidden');
         });
 
         // Date to Unix conversion
@@ -358,6 +387,7 @@
             const input = e.target.value.trim();
             if (!input) {
                 document.getElementById('unixOutputs').classList.add('hidden');
+                document.getElementById('timeAdjustButtons2').classList.add('hidden');
                 return;
             }
 
@@ -403,6 +433,7 @@
 
             if (!dt || !dt.isValid) {
                 document.getElementById('unixOutputs').classList.add('hidden');
+                document.getElementById('timeAdjustButtons2').classList.add('hidden');
                 return;
             }
 
@@ -417,6 +448,7 @@
             document.getElementById('unixMicros').textContent = micros.toString();
 
             document.getElementById('unixOutputs').classList.remove('hidden');
+            document.getElementById('timeAdjustButtons2').classList.remove('hidden');
         });
 
         // Copy functionality
@@ -428,15 +460,15 @@
                 const text = e.target.textContent;
                 try {
                     await navigator.clipboard.writeText(text);
-                    
+
                     // Remove text selection
                     window.getSelection().removeAllRanges();
-                    
+
                     // Show copied tooltip
                     copiedTooltip.style.left = e.pageX + 'px';
                     copiedTooltip.style.top = (e.pageY - 30) + 'px';
                     copiedTooltip.classList.remove('hidden');
-                    
+
                     setTimeout(() => {
                         copiedTooltip.classList.add('hidden');
                     }, 1500);
@@ -463,16 +495,113 @@
         // "Use current date" button functionality
         document.getElementById('currentDateBtn').addEventListener('click', function() {
             const now = DateTime.now();
-            
+
             // Fill Unix timestamp input (in milliseconds)
             const unixInput = document.getElementById('unixInput');
             unixInput.value = now.toMillis().toString();
             unixInput.dispatchEvent(new Event('input'));
-            
+
             // Fill date input with ISO format
             const dateInput = document.getElementById('dateInput');
             dateInput.value = now.toISO();
             dateInput.dispatchEvent(new Event('input'));
+        });
+
+        // Time adjustment button functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('time-adjust-btn')) {
+                const unit = e.target.dataset.unit;
+                const amount = parseInt(e.target.dataset.amount);
+
+                // Check which converter is active
+                const unixInput = document.getElementById('unixInput');
+                const dateInput = document.getElementById('dateInput');
+
+                // Unix to Date converter
+                if (unixInput.value && !document.getElementById('dateOutputs').classList.contains('hidden')) {
+                    let dt;
+                    const input = unixInput.value.trim();
+
+                    if (input.includes('.')) {
+                        dt = DateTime.fromSeconds(parseFloat(input));
+                    } else {
+                        const timestamp = parseInt(input);
+                        if (timestamp.toString().length <= 10) {
+                            dt = DateTime.fromSeconds(timestamp);
+                        } else if (timestamp.toString().length <= 13) {
+                            dt = DateTime.fromMillis(timestamp);
+                        } else {
+                            dt = DateTime.fromMillis(Math.floor(timestamp / 1000));
+                        }
+                    }
+
+                    if (dt && dt.isValid) {
+                        // Adjust the date
+                        const adjusted = dt.plus({ [unit]: amount });
+
+                        // Update the input with the same precision
+                        if (input.includes('.')) {
+                            unixInput.value = adjusted.toSeconds().toFixed(3);
+                        } else {
+                            const timestamp = parseInt(input);
+                            if (timestamp.toString().length <= 10) {
+                                unixInput.value = Math.floor(adjusted.toSeconds()).toString();
+                            } else if (timestamp.toString().length <= 13) {
+                                unixInput.value = adjusted.toMillis().toString();
+                            } else {
+                                unixInput.value = (adjusted.toMillis() * 1000).toString();
+                            }
+                        }
+
+                        unixInput.dispatchEvent(new Event('input'));
+                    }
+                }
+
+                // Date to Unix converter
+                if (dateInput.value && !document.getElementById('unixOutputs').classList.contains('hidden')) {
+                    const input = dateInput.value.trim();
+
+                    // Parse the date using the same strategies as the main converter
+                    let dt = null;
+                    const parseStrategies = [
+                        () => DateTime.fromISO(input),
+                        () => DateTime.fromRFC2822(input),
+                        () => DateTime.fromSQL(input),
+                        () => DateTime.fromHTTP(input),
+                        () => DateTime.fromFormat(input, 'MM/dd/yyyy'),
+                        () => DateTime.fromFormat(input, 'MM/dd/yyyy HH:mm:ss'),
+                        () => DateTime.fromFormat(input, 'MM/dd/yyyy h:mm:ss a'),
+                        () => DateTime.fromFormat(input, 'dd/MM/yyyy'),
+                        () => DateTime.fromFormat(input, 'dd/MM/yyyy HH:mm:ss'),
+                        () => DateTime.fromFormat(input, 'yyyy-MM-dd'),
+                        () => DateTime.fromFormat(input, 'yyyy-MM-dd HH:mm:ss'),
+                        () => DateTime.fromFormat(input, 'dd-MM-yyyy'),
+                        () => DateTime.fromFormat(input, 'dd-MM-yyyy HH:mm:ss'),
+                        () => DateTime.fromJSDate(new Date(input)),
+                    ];
+
+                    for (const strategy of parseStrategies) {
+                        try {
+                            const parsed = strategy();
+                            if (parsed && parsed.isValid) {
+                                dt = parsed;
+                                break;
+                            }
+                        } catch (e) {
+                            // Continue to next strategy
+                        }
+                    }
+
+                    if (dt && dt.isValid) {
+                        // Adjust the date
+                        const adjusted = dt.plus({ [unit]: amount });
+
+                        // Update the input with ISO format
+                        dateInput.value = adjusted.toISO();
+                        dateInput.dispatchEvent(new Event('input'));
+                    }
+                }
+            }
         });
     </script>
 </body>
