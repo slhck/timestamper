@@ -153,49 +153,74 @@
     <script>
         const { DateTime } = luxon;
 
-        // Timezone data with UTC offsets (covers all UTC offsets from -12 to +14)
+        // Curated list of ~50 most common timezones with proper geographic distribution
         const timezones = [
-            { value: 'Pacific/Midway', label: 'Midway Island', offset: -11 },
+            // Americas - covering all major time zones
             { value: 'Pacific/Honolulu', label: 'Honolulu', offset: -10 },
-            { value: 'America/Anchorage', label: 'Anchorage', offset: -9 },
-            { value: 'America/Los_Angeles', label: 'Los Angeles', offset: -8 },
-            { value: 'America/Denver', label: 'Denver', offset: -7 },
-            { value: 'America/Chicago', label: 'Chicago', offset: -6 },
-            { value: 'America/New_York', label: 'New York', offset: -5 },
-            { value: 'America/Caracas', label: 'Caracas', offset: -4.5 },
-            { value: 'America/Halifax', label: 'Halifax', offset: -4 },
-            { value: 'America/St_Johns', label: 'St. Johns', offset: -3.5 },
+            { value: 'America/Anchorage', label: 'Alaska', offset: -9 },
+            { value: 'America/Los_Angeles', label: 'Los Angeles (PST)', offset: -8 },
+            { value: 'America/Vancouver', label: 'Vancouver', offset: -8 },
+            { value: 'America/Phoenix', label: 'Phoenix (Arizona - no DST)', offset: -7 },
+            { value: 'America/Denver', label: 'Denver (MST)', offset: -7 },
+            { value: 'America/Mexico_City', label: 'Mexico City', offset: -6 },
+            { value: 'America/Chicago', label: 'Chicago (CST)', offset: -6 },
+            { value: 'America/Regina', label: 'Saskatchewan (no DST)', offset: -6 },
+            { value: 'America/New_York', label: 'New York (EST)', offset: -5 },
+            { value: 'America/Toronto', label: 'Toronto', offset: -5 },
+            { value: 'America/Bogota', label: 'Bogotá', offset: -5 },
+            { value: 'America/Caracas', label: 'Caracas', offset: -4 },
+            { value: 'America/Halifax', label: 'Halifax (AST)', offset: -4 },
+            { value: 'America/Santiago', label: 'Santiago', offset: -3 },
             { value: 'America/Sao_Paulo', label: 'São Paulo', offset: -3 },
-            { value: 'Atlantic/South_Georgia', label: 'South Georgia', offset: -2 },
-            { value: 'Atlantic/Azores', label: 'Azores', offset: -1 },
-            { value: 'UTC', label: 'UTC', offset: 0 },
+            { value: 'America/Buenos_Aires', label: 'Buenos Aires', offset: -3 },
+            { value: 'America/St_Johns', label: 'Newfoundland', offset: -3.5 },
+            
+            // Europe - at least 3-5 major cities
+            { value: 'Atlantic/Reykjavik', label: 'Reykjavik', offset: 0 },
             { value: 'Europe/London', label: 'London', offset: 0 },
+            { value: 'Europe/Dublin', label: 'Dublin', offset: 0 },
+            { value: 'Europe/Lisbon', label: 'Lisbon', offset: 0 },
             { value: 'Europe/Paris', label: 'Paris', offset: 1 },
             { value: 'Europe/Berlin', label: 'Berlin', offset: 1 },
-            { value: 'Africa/Cairo', label: 'Cairo', offset: 2 },
+            { value: 'Europe/Amsterdam', label: 'Amsterdam', offset: 1 },
+            { value: 'Europe/Rome', label: 'Rome', offset: 1 },
+            { value: 'Europe/Madrid', label: 'Madrid', offset: 1 },
+            { value: 'Europe/Stockholm', label: 'Stockholm', offset: 1 },
+            { value: 'Europe/Warsaw', label: 'Warsaw', offset: 1 },
             { value: 'Europe/Athens', label: 'Athens', offset: 2 },
+            { value: 'Europe/Istanbul', label: 'Istanbul', offset: 3 },
             { value: 'Europe/Moscow', label: 'Moscow', offset: 3 },
+            
+            // Africa - at least 3 major cities
+            { value: 'Africa/Casablanca', label: 'Casablanca', offset: 0 },
+            { value: 'Africa/Lagos', label: 'Lagos', offset: 1 },
+            { value: 'Africa/Cairo', label: 'Cairo', offset: 2 },
+            { value: 'Africa/Johannesburg', label: 'Johannesburg', offset: 2 },
             { value: 'Africa/Nairobi', label: 'Nairobi', offset: 3 },
-            { value: 'Asia/Tehran', label: 'Tehran', offset: 3.5 },
+            
+            // Middle East & Asia
             { value: 'Asia/Dubai', label: 'Dubai', offset: 4 },
-            { value: 'Asia/Kabul', label: 'Kabul', offset: 4.5 },
+            { value: 'Asia/Tehran', label: 'Tehran', offset: 3.5 },
             { value: 'Asia/Karachi', label: 'Karachi', offset: 5 },
-            { value: 'Asia/Kolkata', label: 'Kolkata', offset: 5.5 },
-            { value: 'Asia/Kathmandu', label: 'Kathmandu', offset: 5.75 },
+            { value: 'Asia/Kolkata', label: 'New Delhi/Kolkata', offset: 5.5 },
             { value: 'Asia/Dhaka', label: 'Dhaka', offset: 6 },
-            { value: 'Asia/Yangon', label: 'Yangon', offset: 6.5 },
             { value: 'Asia/Bangkok', label: 'Bangkok', offset: 7 },
-            { value: 'Asia/Shanghai', label: 'Shanghai', offset: 8 },
+            { value: 'Asia/Jakarta', label: 'Jakarta', offset: 7 },
             { value: 'Asia/Singapore', label: 'Singapore', offset: 8 },
+            { value: 'Asia/Hong_Kong', label: 'Hong Kong', offset: 8 },
+            { value: 'Asia/Shanghai', label: 'Beijing/Shanghai', offset: 8 },
             { value: 'Asia/Tokyo', label: 'Tokyo', offset: 9 },
             { value: 'Asia/Seoul', label: 'Seoul', offset: 9 },
+            
+            // Oceania
+            { value: 'Australia/Perth', label: 'Perth', offset: 8 },
             { value: 'Australia/Adelaide', label: 'Adelaide', offset: 9.5 },
-            { value: 'Australia/Sydney', label: 'Sydney', offset: 10 },
-            { value: 'Pacific/Noumea', label: 'Noumea', offset: 11 },
+            { value: 'Australia/Brisbane', label: 'Brisbane', offset: 10 },
+            { value: 'Australia/Sydney', label: 'Sydney/Melbourne', offset: 10 },
             { value: 'Pacific/Auckland', label: 'Auckland', offset: 12 },
-            { value: 'Pacific/Chatham', label: 'Chatham Islands', offset: 12.75 },
-            { value: 'Pacific/Tongatapu', label: 'Tongatapu', offset: 13 },
-            { value: 'Pacific/Kiritimati', label: 'Kiritimati', offset: 14 }
+            
+            // UTC
+            { value: 'UTC', label: 'UTC', offset: 0 }
         ];
 
         // Populate timezone select with UTC offsets
