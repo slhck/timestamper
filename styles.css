@@ -2,11 +2,25 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.75rem 1rem;
-    background-color: #0a0a0a;
-    border: 1px solid #2a2a2a;
-    border-radius: 0.5rem;
-    transition: all 0.2s;
+    padding: 0.875rem 1.25rem;
+    background: linear-gradient(135deg, #0f0f0f 0%, #0a0a0a 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 0.75rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.output-row::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.15), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
 @media (max-width: 768px) {
@@ -18,15 +32,24 @@
 }
 
 .output-row:hover {
-    background-color: #1a1a1a;
-    border-color: #3a3a3a;
+    background: linear-gradient(135deg, #141414 0%, #0f0f0f 100%);
+    border-color: rgba(59, 130, 246, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+.output-row:hover::before {
+    opacity: 1;
 }
 
 .label {
-    font-size: 0.875rem;
-    color: #6b7280;
-    font-weight: 500;
+    font-size: 0.8125rem;
+    color: #8b92a0;
+    font-weight: 600;
     min-width: 140px;
+    letter-spacing: 0.025em;
+    text-transform: uppercase;
+    opacity: 0.8;
 }
 
 @media (max-width: 768px) {
@@ -37,14 +60,18 @@
 }
 
 .value {
-    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
-    color: #e5e7eb;
+    font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    color: #f0f1f4;
     cursor: pointer;
     user-select: all;
-    padding: 0.25rem 0.5rem;
-    border-radius: 0.25rem;
-    transition: all 0.2s;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    font-size: 0.925rem;
+    font-weight: 500;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid transparent;
 }
 
 @media (max-width: 768px) {
@@ -58,8 +85,11 @@
 }
 
 .value:hover {
-    background-color: rgba(59, 130, 246, 0.1);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(59, 130, 246, 0.1));
     color: #93bbfc;
+    border-color: rgba(59, 130, 246, 0.3);
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
 }
 
 .value:active {
@@ -101,7 +131,21 @@
 }
 
 input:focus {
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15), 0 0 20px rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.4) !important;
+    transform: translateY(-1px);
+}
+
+input {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+input::placeholder {
+    transition: opacity 0.3s;
+}
+
+input:focus::placeholder {
+    opacity: 0.5;
 }
 
 @keyframes fadeIn {
@@ -155,21 +199,48 @@ input[type="text"], select {
 }
 
 .control-button {
-    padding: 0.5rem 0.75rem;
-    background-color: #141414;
-    border: 1px solid #2a2a2a;
-    border-radius: 0.5rem;
-    color: #d1d5db;
-    font-size: 0.75rem;
-    font-weight: 500;
+    padding: 0.625rem 1rem;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(59, 130, 246, 0.05) 100%);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 0.625rem;
+    color: #93bbfc;
+    font-size: 0.8125rem;
+    font-weight: 600;
     white-space: nowrap;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    letter-spacing: 0.025em;
+    position: relative;
+    overflow: hidden;
+}
+
+.control-button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.4s;
 }
 
 .control-button:hover {
-    background-color: #1f1f1f;
-    border-color: #6b7280;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0.1) 100%);
+    border-color: rgba(59, 130, 246, 0.4);
+    color: #a8c7ff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.25), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.control-button:hover::after {
+    transform: translate(-50%, -50%) scale(1.5);
+}
+
+.control-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
 }
 
 @media (max-width: 768px) {
@@ -210,23 +281,47 @@ input[type="text"], select {
 }
 
 .time-adjust-btn {
-    padding: 0.375rem 0.75rem;
-    background-color: #141414;
-    border: 1px solid #2a2a2a;
-    border-radius: 0.375rem;
+    padding: 0.5rem 0.875rem;
+    background: linear-gradient(135deg, #1a1a1a 0%, #141414 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.5rem;
     color: #9ca3af;
-    font-size: 0.8125rem;
-    font-weight: 500;
+    font-size: 0.75rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
     text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: relative;
+    overflow: hidden;
+}
+
+.time-adjust-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(59, 130, 246, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
 }
 
 .time-adjust-btn:hover {
-    background-color: #1f1f1f;
-    border-color: #3a3a3a;
-    color: #d1d5db;
+    background: linear-gradient(135deg, #222222 0%, #1a1a1a 100%);
+    border-color: rgba(59, 130, 246, 0.3);
+    color: #e5e7eb;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 2px 6px rgba(59, 130, 246, 0.15);
+}
+
+.time-adjust-btn:hover::before {
+    width: 100%;
+    height: 100%;
+    opacity: 0.3;
 }
 
 .time-adjust-btn:active {
