@@ -439,13 +439,14 @@ function setupEventListeners() {
             const unit = e.target.dataset.unit;
             const amount = parseInt(e.target.dataset.amount);
 
-            // Check which converter is active
-            const unixInput = document.getElementById('unixInput');
-            const dateInput = document.getElementById('dateInput');
-
-            if (unixInput.value && !document.getElementById('dateOutputs').classList.contains('hidden')) {
+            // Check which button group the clicked button belongs to
+            const buttonContainer = e.target.closest('[id^="timeAdjustButtons"]');
+            
+            if (buttonContainer && buttonContainer.id === 'timeAdjustButtons1') {
+                // Unix to Date converter buttons
                 adjustTime(unit, amount, 'unix');
-            } else if (dateInput.value && !document.getElementById('unixOutputs').classList.contains('hidden')) {
+            } else if (buttonContainer && buttonContainer.id === 'timeAdjustButtons2') {
+                // Date to Unix converter buttons
                 adjustTime(unit, amount, 'date');
             }
         }
