@@ -60,7 +60,7 @@
 }
 
 .value {
-    font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
     color: #f0f1f4;
     cursor: pointer;
     user-select: all;
@@ -169,7 +169,7 @@ body {
 }
 
 input[type="text"], select {
-    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+    font-family: 'JetBrains Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
 }
 
 .header-container {
@@ -269,15 +269,6 @@ input[type="text"], select {
         font-size: 0.875rem;
         flex-basis: 100%;
     }
-}
-
-.ascii-art {
-    font-family: 'Courier New', monospace;
-    line-height: 1.2;
-    white-space: pre;
-    color: #6b7280;
-    font-size: 0.75rem;
-    letter-spacing: -0.05em;
 }
 
 .time-adjust-btn {
