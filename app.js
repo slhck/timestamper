@@ -78,6 +78,12 @@ function init() {
     populateTimezones();
     setupEventListeners();
     loadFromUrlParams();
+    
+    // Auto-set current time if no URL params are present
+    const params = new URLSearchParams(window.location.search);
+    if (!params.get('unix') && !params.get('date')) {
+        setCurrentTime();
+    }
 }
 
 // Populate timezone select with UTC offsets
@@ -377,6 +383,21 @@ function setupCopyFunctionality() {
 }
 
 
+// Set current time in both input fields
+function setCurrentTime() {
+    const now = DateTime.now();
+
+    // Fill Unix timestamp input (in milliseconds)
+    const unixInput = document.getElementById('unixInput');
+    unixInput.value = now.toMillis().toString();
+    unixInput.dispatchEvent(new Event('input'));
+
+    // Fill date input with ISO format
+    const dateInput = document.getElementById('dateInput');
+    dateInput.value = now.toISO();
+    dateInput.dispatchEvent(new Event('input'));
+}
+
 // URL parameter support for sharing
 function updateUrlParam(key, value) {
     const url = new URL(window.location);
@@ -419,19 +440,7 @@ function setupEventListeners() {
     });
 
     // Current date button
-    document.getElementById('currentDateBtn').addEventListener('click', function() {
-        const now = DateTime.now();
-
-        // Fill Unix timestamp input (in milliseconds)
-        const unixInput = document.getElementById('unixInput');
-        unixInput.value = now.toMillis().toString();
-        unixInput.dispatchEvent(new Event('input'));
-
-        // Fill date input with ISO format
-        const dateInput = document.getElementById('dateInput');
-        dateInput.value = now.toISO();
-        dateInput.dispatchEvent(new Event('input'));
-    });
+    document.getElementById('currentDateBtn').addEventListener('click', setCurrentTime);
 
     // Time adjustment buttons
     document.addEventListener('click', function(e) {
