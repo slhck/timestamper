@@ -272,20 +272,21 @@ input[type="text"], select {
 }
 
 .time-adjust-btn {
-    padding: 0.5rem 0.875rem;
+    padding: 0.5rem 0.75rem;
     background: linear-gradient(135deg, #1a1a1a 0%, #141414 100%);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 0.5rem;
     color: #9ca3af;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     white-space: nowrap;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.04em;
     position: relative;
     overflow: hidden;
+    min-width: 0;
 }
 
 .time-adjust-btn::before {
@@ -321,8 +322,16 @@ input[type="text"], select {
 
 @media (max-width: 768px) {
     .time-adjust-btn {
-        flex: 1 0 calc(25% - 0.5rem);
-        min-width: 4rem;
+        padding: 0.5rem 0.5rem;
+        font-size: 0.65rem;
         text-align: center;
+    }
+}
+
+@media (max-width: 640px) {
+    .time-adjust-btn {
+        padding: 0.45rem 0.4rem;
+        font-size: 0.6rem;
+        letter-spacing: 0.02em;
     }
 }

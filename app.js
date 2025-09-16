@@ -78,12 +78,15 @@ function init() {
     populateTimezones();
     setupEventListeners();
     loadFromUrlParams();
-    
+
     // Auto-set current time if no URL params are present
     const params = new URLSearchParams(window.location.search);
     if (!params.get('unix') && !params.get('date')) {
         setCurrentTime();
     }
+
+    // Start the relative time update timer
+    startRelativeTimeUpdater();
 }
 
 // Populate timezone select with UTC offsets
@@ -421,6 +424,17 @@ function loadFromUrlParams() {
         document.getElementById('dateInput').value = dateParam;
         document.getElementById('dateInput').dispatchEvent(new Event('input'));
     }
+}
+
+// Start relative time updater
+function startRelativeTimeUpdater() {
+    setInterval(() => {
+        // Update relative time for Unix to Date converter
+        const relativeTime1 = document.getElementById('relativeTime');
+        if (relativeTime1 && lastValidDateTime && !document.getElementById('dateOutputs').classList.contains('hidden')) {
+            relativeTime1.textContent = formatWithLocale(lastValidDateTime, 'relative');
+        }
+    }, 1000); // Update every second
 }
 
 // Setup all event listeners
